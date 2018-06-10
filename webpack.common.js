@@ -13,6 +13,7 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       title: 'Viz',
+      template: 'index.html',
     }),
   ],
   stats: {
