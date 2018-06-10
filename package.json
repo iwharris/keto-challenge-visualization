@@ -6,7 +6,8 @@
   "dependencies": {
     "d3": "^5.4.0",
     "clean-webpack-plugin": "^0.1.19",
-    "html-webpack-plugin": "^3.2.0"
+    "html-webpack-plugin": "^3.2.0",
+    "webpack-merge": "^4.1.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -20,12 +21,12 @@
     "webpack": "^4.11.1",
     "webpack-bundle-size-analyzer": "^2.7.0",
     "webpack-cli": "^3.0.2",
-    "webpack-dev-server": "^3.1.4",
-    "webpack-merge": "^4.1.2"
+    "webpack-dev-server": "^3.1.4"
   },
   "scripts": {
-    "dev": "webpack-dev-server --open --config webpack.dev.js",
+    "analyze": "webpack --config webpack.prod.js --json | webpack-bundle-size-analyzer",
     "build": "webpack --config webpack.prod.js",
-    "analyze": "webpack --config webpack.prod.js --json | webpack-bundle-size-analyzer"
+    "dev": "webpack-dev-server --open --config webpack.dev.js",
+    "lint": "eslint src config"
   }
 }
