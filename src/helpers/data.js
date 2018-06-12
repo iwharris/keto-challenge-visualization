@@ -1,4 +1,5 @@
 // import _ from 'lodash';
+import findLastIndex from 'lodash/findLastIndex';
 import map from 'lodash/map';
 import mapValues from 'lodash/mapValues';
 import reduce from 'lodash/reduce';
@@ -37,6 +38,14 @@ function parseNumber(value) {
 }
 
 /**
+ * Calculates the index of the latest weigh-in.
+ * @param {} weights
+ */
+function calculateLatestCheckin(weights) {
+  return findLastIndex(weights, Boolean);
+}
+
+/**
  * Parse and normalize a row from the CSV.
  *
  * @param {Object} row raw row, parsed from CSV.
@@ -50,10 +59,11 @@ export default function parseRow(row) {
       parseNumber,
     ], (acc, transform) => transform(acc), value));
 
-
   const weightKeys = map(range(7), i => `weight_${i}`);
   mappedRow.weights = map(weightKeys, k => mappedRow[k]);
   mappedRow = omit(mappedRow, weightKeys);
+
+  mappedRow.latestCheckin = calculateLatestCheckin(mappedRow.weights);
 
   // Apply column-specifc transformations
   return Object.assign(mappedRow, {
