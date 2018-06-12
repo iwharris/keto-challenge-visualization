@@ -38,11 +38,16 @@ function parseNumber(value) {
  */
 export default function parseRow(row) {
   // Apply transformations to all row values
-  const mappedRow = _.mapValues(row, value =>
+  let mappedRow = _.mapValues(row, value =>
     _.reduce([
       _.trim,
       parseNumber,
     ], (acc, transform) => transform(acc), value));
+
+
+  const weightKeys = _.map(_.range(7), i => `weight_${i}`);
+  mappedRow.weights = _.map(weightKeys, k => mappedRow[k]);
+  mappedRow = _.omit(mappedRow, weightKeys);
 
   // Apply column-specifc transformations
   return Object.assign(mappedRow, {
