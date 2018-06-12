@@ -1,4 +1,10 @@
-import _ from 'lodash';
+// import _ from 'lodash';
+import map from 'lodash/map';
+import mapValues from 'lodash/mapValues';
+import reduce from 'lodash/reduce';
+import range from 'lodash/range';
+import omit from 'lodash/omit';
+import trim from 'lodash/trim';
 
 /**
  * Parses and normalizes height (given in feet/inches), returning inches.
@@ -38,16 +44,16 @@ function parseNumber(value) {
  */
 export default function parseRow(row) {
   // Apply transformations to all row values
-  let mappedRow = _.mapValues(row, value =>
-    _.reduce([
-      _.trim,
+  let mappedRow = mapValues(row, value =>
+    reduce([
+      trim,
       parseNumber,
     ], (acc, transform) => transform(acc), value));
 
 
-  const weightKeys = _.map(_.range(7), i => `weight_${i}`);
-  mappedRow.weights = _.map(weightKeys, k => mappedRow[k]);
-  mappedRow = _.omit(mappedRow, weightKeys);
+  const weightKeys = map(range(7), i => `weight_${i}`);
+  mappedRow.weights = map(weightKeys, k => mappedRow[k]);
+  mappedRow = omit(mappedRow, weightKeys);
 
   // Apply column-specifc transformations
   return Object.assign(mappedRow, {
